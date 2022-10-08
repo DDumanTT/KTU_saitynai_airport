@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFlightRequest;
 use App\Http\Requests\UpdateFlightRequest;
+use App\Models\Airport;
 use App\Models\Flight;
+use Illuminate\Http\Request;
 
 class FlightController extends Controller
 {
@@ -15,17 +17,18 @@ class FlightController extends Controller
      */
     public function index()
     {
-        //
+        return Flight::all();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      *
+     * @param  \App\Models\Flight  $airport
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show(Flight $flight)
     {
-        //
+        return $flight;
     }
 
     /**
@@ -34,31 +37,22 @@ class FlightController extends Controller
      * @param  \App\Http\Requests\StoreFlightRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFlightRequest $request)
+    public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'code' => 'required|string',
+            'gate' => 'required|string',
+            'price' => 'required|numeric',
+            'duration' => 'required|date_format:H:i:s',
+            'departure_time' => 'required|date|before:arrival_time',
+            'arrival_time' => 'required|date|after:departure_time',
+            'departure_id' => 'required|exists:airports,id',
+            'arrival_id' => 'required|exists:airports,id',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Flight  $flight
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Flight $flight)
-    {
-        //
-    }
+        $flight = Flight::create($request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Flight  $flight
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Flight $flight)
-    {
-        //
+        return $flight;
     }
 
     /**
@@ -68,9 +62,21 @@ class FlightController extends Controller
      * @param  \App\Models\Flight  $flight
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateFlightRequest $request, Flight $flight)
+    public function update(Request $request, Flight $flight)
     {
-        //
+        $request->validate([
+            'code' => 'required|string',
+            'gate' => 'required|string',
+            'duration' => 'required|date_format:H:i:s',
+            'departure_time' => 'required|date|before:arrival_time',
+            'arrival_time' => 'required|date|after:departure_time',
+            'departure_id' => 'required|exists:airports,id',
+            'arrival_id' => 'required|exists:airports,id',
+        ]);
+
+        $flight->update($request->all());
+
+        return $flight;
     }
 
     /**
@@ -81,6 +87,6 @@ class FlightController extends Controller
      */
     public function destroy(Flight $flight)
     {
-        //
+        $flight->delete();
     }
 }

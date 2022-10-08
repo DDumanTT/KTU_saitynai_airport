@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AirportController;
+use App\Http\Controllers\FlightController;
+use App\Http\Controllers\PlaneController;
+use App\Models\Airport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::apiResources([
+    'airports' => AirportController::class,
+    'flights' => FlightController::class,
+    'planes' => PlaneController::class
+]);

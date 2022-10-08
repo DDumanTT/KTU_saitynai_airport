@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAirportRequest;
 use App\Http\Requests\UpdateAirportRequest;
 use App\Models\Airport;
+use Illuminate\Http\Request;
 
 class AirportController extends Controller
 {
@@ -15,28 +16,7 @@ class AirportController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAirportRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAirportRequest $request)
-    {
-        //
+        return Airport::all();
     }
 
     /**
@@ -47,18 +27,26 @@ class AirportController extends Controller
      */
     public function show(Airport $airport)
     {
-        //
+        return $airport;
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  \App\Models\Airport  $airport
+     * @param  \App\Http\Requests\StoreAirportRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Airport $airport)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'code' => 'required|string'
+        ]);
+
+        $airport = Airport::create($request->all());
+
+        return $airport;
     }
 
     /**
@@ -68,9 +56,17 @@ class AirportController extends Controller
      * @param  \App\Models\Airport  $airport
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAirportRequest $request, Airport $airport)
+    public function update(Request $request, Airport $airport)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'code' => 'required|string'
+        ]);
+
+        $airport->update($request->all());
+
+        return $airport;
     }
 
     /**
@@ -81,6 +77,6 @@ class AirportController extends Controller
      */
     public function destroy(Airport $airport)
     {
-        //
+        $airport->delete();
     }
 }

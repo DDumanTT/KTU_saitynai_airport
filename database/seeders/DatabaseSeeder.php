@@ -18,11 +18,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // TODO: make seeder
-
-        // $airports = Airport::factory()->count(5)->create();
-
-        // $flights = Flight::factory()->count(10)->for()
-
-        // Plane::factory()->count(10)->forFlight
+        Airport::factory()->count(5)->create();
+        Flight::factory()->count(10)->hasPlane()->create();
+        //     Airport::factory()->count(5)->each(function ($item) {
+        //         $flights = Flight::all();
+        //         $rand = $flights->random();
+        //         $item->departure()->associate($rand);
+        //         $item->arrival()->associate($flights->whereNotIn('id', [$rand->id])->random());
+        //     })->create();
     }
 }

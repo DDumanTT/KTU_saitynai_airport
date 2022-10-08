@@ -17,10 +17,12 @@ class Flight extends Model
     protected $fillable = [
         'code',
         'gate',
+        'price',
         'duration',
         'departure_time',
         'arrival_time',
-        'price'
+        'departure_id',
+        'arrival_id'
     ];
 
     public function plane()

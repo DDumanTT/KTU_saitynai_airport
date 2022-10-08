@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePlaneRequest;
 use App\Http\Requests\UpdatePlaneRequest;
 use App\Models\Plane;
+use Illuminate\Http\Request;
 
 class PlaneController extends Controller
 {
@@ -15,17 +16,18 @@ class PlaneController extends Controller
      */
     public function index()
     {
-        //
+        return Plane::all();
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the specified resource.
      *
+     * @param  \App\Models\Plane  $airport
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show(Plane $plane)
     {
-        //
+        return $plane;
     }
 
     /**
@@ -34,31 +36,15 @@ class PlaneController extends Controller
      * @param  \App\Http\Requests\StorePlaneRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePlaneRequest $request)
+    public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'model' => 'required|string',
+            'seats' => 'required|numeric',
+            'flight_id' => 'required|exists:flights,id'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Plane  $plane
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Plane $plane)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Plane  $plane
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Plane $plane)
-    {
-        //
+        return Plane::create($request->all());
     }
 
     /**
@@ -68,9 +54,17 @@ class PlaneController extends Controller
      * @param  \App\Models\Plane  $plane
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePlaneRequest $request, Plane $plane)
+    public function update(Request $request, Plane $plane)
     {
-        //
+        $request->validate([
+            'model' => 'required|string',
+            'seats' => 'required|numeric',
+            'flight_id' => 'required|exists:flights,id'
+        ]);
+
+        $plane->update($request->all());
+
+        return $plane;
     }
 
     /**
@@ -81,6 +75,6 @@ class PlaneController extends Controller
      */
     public function destroy(Plane $plane)
     {
-        //
+        $plane->delete();
     }
 }

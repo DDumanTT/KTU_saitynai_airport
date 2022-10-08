@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Airport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,19 @@ class FlightFactory extends Factory
             'duration' => fake()->time(),
             'departure_time' => fake()->dateTime(),
             'arrival_time' => fake()->dateTime(),
-            'price' => fake()->randomFloat(2, 0, 1000)
+            'price' => fake()->randomFloat(2, 0, 1000),
+            'departure_id' => function () {
+                if ($airport = Airport::all()->random()) {
+                    return $airport->id;
+                }
+                return Airport::factory()->create()->id;
+            },
+            'arrival_id' => function () {
+                if ($airport = Airport::all()->random()) {
+                    return $airport->id;
+                }
+                return Airport::factory()->create()->id;
+            }
         ];
     }
 }
