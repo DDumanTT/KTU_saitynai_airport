@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,12 +23,13 @@ class Flight extends Model
         'departure_time',
         'arrival_time',
         'departure_id',
-        'arrival_id'
+        'arrival_id',
+        'airline_id'
     ];
 
-    public function plane()
+    public function airline()
     {
-        return $this->hasOne(Plane::class);
+        return $this->belongsTo(Airline::class);
     }
 
     public function departure()

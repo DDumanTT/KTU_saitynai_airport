@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Airport extends Model
+class Airline extends Model
 {
     use HasFactory;
 
@@ -16,17 +16,17 @@ class Airport extends Model
      */
     protected $fillable = [
         'name',
-        'address',
-        'code'
+        'hq_address',
+        'logo'
     ];
 
-    public function departures()
+    public function flights()
     {
-        return $this->hasMany(Flight::class, 'departure_id');
+        return $this->hasMany(Flight::class);
     }
 
-    public function arrivals()
+    public function planes()
     {
-        return $this->hasMany(Flight::class, 'arrival_id');
+        return $this->hasMany(Plane::class);
     }
 }

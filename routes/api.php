@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\AirportArrivalController;
+use App\Http\Controllers\AirportDepartureController;
+use App\Http\Controllers\AirlineController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\PlaneController;
-use App\Models\Airport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +24,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::apiResources([
-    'airports' => AirportController::class,
-    'flights' => FlightController::class,
-    'planes' => PlaneController::class
-]);
+
+Route::apiResource('airports', AirportController::class);
+Route::apiResource('airports.departures', AirportDepartureController::class)->scoped();
+Route::apiResource('airports.arrivals', AirportArrivalController::class)->scoped();
+Route::apiResource('airlines', AirlineController::class);
+Route::apiResource('flights', FlightController::class);
+Route::apiResource('planes', PlaneController::class);

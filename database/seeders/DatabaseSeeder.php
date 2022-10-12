@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Airline;
 use Illuminate\Database\Seeder;
 use App\Models\Airport;
 use App\Models\Flight;
@@ -17,14 +19,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // TODO: make seeder
         Airport::factory()->count(5)->create();
-        Flight::factory()->count(10)->hasPlane()->create();
-        //     Airport::factory()->count(5)->each(function ($item) {
-        //         $flights = Flight::all();
-        //         $rand = $flights->random();
-        //         $item->departure()->associate($rand);
-        //         $item->arrival()->associate($flights->whereNotIn('id', [$rand->id])->random());
-        //     })->create();
+
+        Airline::factory()->count(5)->hasPlanes(3)->create();
+
+        Flight::factory()->count(10)->create();
     }
 }

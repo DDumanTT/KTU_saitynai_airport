@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('price');
             $table->foreignId('departure_id')->constrained('airports')->onDelete('cascade');
             $table->foreignId('arrival_id')->constrained('airports')->onDelete('cascade');
+            $table->foreignId('airline_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

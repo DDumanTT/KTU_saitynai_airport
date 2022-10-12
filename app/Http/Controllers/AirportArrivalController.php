@@ -2,42 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFlightRequest;
-use App\Http\Requests\UpdateFlightRequest;
 use App\Models\Airport;
 use App\Models\Flight;
 use Illuminate\Http\Request;
 
-class FlightController extends Controller
+class AirportArrivalController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Airport $airport)
     {
-        return Flight::all();
+        return $airport->arrivals;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Flight  $airport
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Flight $flight)
+    public function show($airport_id, $arrival_id)
     {
-        return $flight;
+        return Flight::findOrFail($arrival_id);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreFlightRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Airport $airport)
     {
         $request->validate([
             'code' => 'required|string',
@@ -47,11 +45,13 @@ class FlightController extends Controller
             'departure_time' => 'required|date|before:arrival_time',
             'arrival_time' => 'required|date|after:departure_time',
             'departure_id' => 'required|exists:airports,id',
-            'arrival_id' => 'required|exists:airports,id',
+            'arrival_id' => 'prohibited',
             'airline_id' => 'required|exists:airlines,id',
         ]);
 
-        $flight = Flight::create($request->all());
+        $flight = new Flight($request->all());
+
+        $airport->arrivals()->save($flight);
 
         return $flight;
     }
@@ -59,22 +59,25 @@ class FlightController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateFlightRequest  $request
-     * @param  \App\Models\Flight  $flight
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Flight $flight)
+    public function update(Request $request, Airport $airport, $id)
     {
         $request->validate([
             'code' => 'required|string',
             'gate' => 'required|string',
+            'price' => 'required|numeric',
             'duration' => 'required|date_format:H:i:s',
             'departure_time' => 'required|date|before:arrival_time',
             'arrival_time' => 'required|date|after:departure_time',
             'departure_id' => 'required|exists:airports,id',
-            'arrival_id' => 'required|exists:airports,id',
+            'arrival_id' => 'prohibited',
             'airline_id' => 'required|exists:airlines,id',
         ]);
+
+        $flight = Flight::findOrFail($id);
 
         $flight->update($request->all());
 
@@ -84,11 +87,11 @@ class FlightController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Flight  $flight
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Flight $flight)
+    public function destroy(Airport $airport, $id)
     {
-        $flight->delete();
+        Flight::findOrFail($id)->delete();
     }
 }

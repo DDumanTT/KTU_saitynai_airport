@@ -41,7 +41,7 @@ class PlaneController extends Controller
         $request->validate([
             'model' => 'required|string',
             'seats' => 'required|numeric',
-            'flight_id' => 'required|exists:flights,id'
+            'airline_id' => 'required|exists:airlines,id'
         ]);
 
         return Plane::create($request->all());

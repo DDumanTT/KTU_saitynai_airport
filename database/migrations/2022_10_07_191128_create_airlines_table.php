@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('planes', function (Blueprint $table) {
+        // Create airlines table
+        Schema::create('airlines', function (Blueprint $table) {
             $table->id();
-            $table->string('model');
-            $table->string('seats');
-            $table->foreignId('airline_id')->constrained()->onDelete('cascade')->nullable();
+            $table->string('name');
+            $table->string('hq_address');
+            $table->string('logo');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('planes');
+        Schema::dropIfExists('airlines');
     }
 };

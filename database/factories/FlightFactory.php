@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Airline;
 use App\Models\Airport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -35,6 +36,12 @@ class FlightFactory extends Factory
                     return $airport->id;
                 }
                 return Airport::factory()->create()->id;
+            },
+            'airline_id' => function () {
+                if ($airline = Airline::all()->random()) {
+                    return $airline->id;
+                }
+                return airline::factory()->create()->id;
             }
         ];
     }

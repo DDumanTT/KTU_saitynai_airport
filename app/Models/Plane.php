@@ -17,11 +17,11 @@ class Plane extends Model
     protected $fillable = [
         'model',
         'seats',
-        'flight_id'
+        'airline_id'
     ];
 
-    public function flight()
+    public function airline()
     {
-        return $this->belongsTo(Flight::class);
+        return $this->belongsTo(Airline::class);
     }
 }
