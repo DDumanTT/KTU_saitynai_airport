@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,12 @@ class AirportFactory extends Factory
             'name' => fake()->company(),
             'address' => fake()->address(),
             'code' => fake()->regexify("[A-Z]{3,4}/[A-Z]{3,4}"),
+            'city_id' => function () {
+                if ($city = City::all()->random()) {
+                    return $city->id;
+                }
+                return City::factory()->create()->id;
+            }
         ];
     }
 }

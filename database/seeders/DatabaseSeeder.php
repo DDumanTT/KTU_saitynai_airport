@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Airline;
 use Illuminate\Database\Seeder;
 use App\Models\Airport;
+use App\Models\City;
 use App\Models\Flight;
 use App\Models\Plane;
 
@@ -19,6 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        City::factory()->count(5)->hasAirports(2)->create();
+
         Airport::factory()->count(5)->create();
 
         Airline::factory()->count(5)->hasPlanes(3)->create();

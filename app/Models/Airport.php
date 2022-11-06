@@ -17,7 +17,8 @@ class Airport extends Model
     protected $fillable = [
         'name',
         'address',
-        'code'
+        'code',
+        'city_id'
     ];
 
     public function departures()
@@ -28,5 +29,10 @@ class Airport extends Model
     public function arrivals()
     {
         return $this->hasMany(Flight::class, 'arrival_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 }

@@ -41,7 +41,8 @@ class AirportController extends Controller
         $request->validate([
             'name' => 'required|string',
             'address' => 'required|string',
-            'code' => 'required|string'
+            'code' => 'required|string',
+            'city_id' => 'required|exists:cities,id'
         ]);
 
         $airport = Airport::create($request->all());
@@ -61,7 +62,8 @@ class AirportController extends Controller
         $request->validate([
             'name' => 'required|string',
             'address' => 'required|string',
-            'code' => 'required|string'
+            'code' => 'required|string',
+            'city_id' => 'required|exists:cities,id'
         ]);
 
         $airport->update($request->all());
