@@ -18,7 +18,7 @@ class FlightPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class FlightPolicy
      */
     public function view(User $user, Flight $flight)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class FlightPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -53,7 +53,7 @@ class FlightPolicy
      */
     public function update(User $user, Flight $flight)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -65,7 +65,7 @@ class FlightPolicy
      */
     public function delete(User $user, Flight $flight)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -77,7 +77,7 @@ class FlightPolicy
      */
     public function restore(User $user, Flight $flight)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -89,6 +89,6 @@ class FlightPolicy
      */
     public function forceDelete(User $user, Flight $flight)
     {
-        //
+        return $user->role == 'admin';
     }
 }

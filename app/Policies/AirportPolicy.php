@@ -18,7 +18,7 @@ class AirportPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class AirportPolicy
      */
     public function view(User $user, Airport $airport)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class AirportPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->role == "admin";
     }
 
     /**
@@ -53,7 +53,7 @@ class AirportPolicy
      */
     public function update(User $user, Airport $airport)
     {
-        //
+        return $user->role == "admin";
     }
 
     /**
@@ -65,7 +65,7 @@ class AirportPolicy
      */
     public function delete(User $user, Airport $airport)
     {
-        //
+        return $user->role == "admin";
     }
 
     /**
@@ -77,7 +77,7 @@ class AirportPolicy
      */
     public function restore(User $user, Airport $airport)
     {
-        //
+        return $user->role == "admin";
     }
 
     /**
@@ -89,6 +89,6 @@ class AirportPolicy
      */
     public function forceDelete(User $user, Airport $airport)
     {
-        //
+        return $user->role == "admin";
     }
 }

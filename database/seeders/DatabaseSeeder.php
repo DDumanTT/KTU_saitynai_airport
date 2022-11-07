@@ -10,6 +10,7 @@ use App\Models\Airport;
 use App\Models\City;
 use App\Models\Flight;
 use App\Models\Plane;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()->admin()->create();
+
+        User::factory(5)->create();
+
         City::factory()->count(5)->hasAirports(2)->create();
 
         Airport::factory()->count(5)->create();

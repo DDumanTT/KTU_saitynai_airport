@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 class PlaneController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Plane::class, 'plane');
+    }
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

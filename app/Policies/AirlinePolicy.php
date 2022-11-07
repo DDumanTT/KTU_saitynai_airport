@@ -18,7 +18,7 @@ class AirlinePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class AirlinePolicy
      */
     public function view(User $user, Airline $airline)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class AirlinePolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -53,7 +53,7 @@ class AirlinePolicy
      */
     public function update(User $user, Airline $airline)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -65,7 +65,7 @@ class AirlinePolicy
      */
     public function delete(User $user, Airline $airline)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -77,7 +77,7 @@ class AirlinePolicy
      */
     public function restore(User $user, Airline $airline)
     {
-        //
+        return $user->role == 'admin';
     }
 
     /**
@@ -89,6 +89,6 @@ class AirlinePolicy
      */
     public function forceDelete(User $user, Airline $airline)
     {
-        //
+        return $user->role == 'admin';
     }
 }
