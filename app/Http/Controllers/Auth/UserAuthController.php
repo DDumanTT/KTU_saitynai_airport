@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserAuthController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->client = DB::table('oauth_clients')->where('password_client', true)->first();
+    // }
+
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -25,7 +32,19 @@ class UserAuthController extends Controller
 
         $token = $user->createToken('API Token')->accessToken;
 
-        return response(['user' => $user, 'token' => $token]);
+        $response = Http::asForm()->post(env("APP_URL", "http://localhost") . '/oauth/token', [
+            'grant_type' => 'password',
+            // 'client_id' => $this->client->id,
+            'client_id' => '3',
+            // 'client_secret' => $this->client->secret,
+            'client_secret' => 'e3HC5KvOhzVwstVUkaSsFeBee9u7pyBX8DPzyna9',
+            'username' => $data['email'],
+            'password' => $request->password,
+            'scope' => '',
+        ]);
+
+        return response(['user' => $user, 'tokens' => $response]);
+        // return $response;
     }
 
     public function login(Request $request)
@@ -35,13 +54,22 @@ class UserAuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (!auth()->attempt($data)) {
-            return response(['error_message' => 'Incorrect Details.
-            Please try again']);
-        }
+        // if (!auth()->attempt($data)) {
+        //     return response(['error_message' => 'Incorrect Details.
+        //     Please try again']);
+        // }
 
-        $token = auth()->user()->createToken('API Token')->accessToken;
+        // $token = auth()->user()->createToken('API Token')->accessToken;
+        $response = Http::asForm()->post(env("APP_URL", "http://localhost") . '/oauth/token', [
+            'grant_type' => 'password',
+            'client_id' => $this->client->id,
+            'client_secret' => $this->client->secret,
+            'username' => $data['email'],
+            'password' => $request->password,
+            'scope' => '',
+        ]);
 
-        return response(['user' => auth()->user(), 'token' => $token]);
+        return response(['user' => auth()->user(), 'tokens' => $response]);
+        // return $response;
     }
 }
