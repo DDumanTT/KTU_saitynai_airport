@@ -1,19 +1,25 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "nuxt": "3.0.0",
-    "nuxt-typed-router": "^1.2.3"
-  },
-  "dependencies": {
-    "@vuestic/nuxt": "^1.0.9"
-  }
+    "private": true,
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare"
+    },
+    "devDependencies": {
+        "@nuxtjs/eslint-config-typescript": "^12.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "nuxt": "3.0.0",
+        "nuxt-typed-router": "^1.2.3",
+        "sass": "^1.56.2"
+    },
+    "dependencies": {
+        "@nuxt-alt/auth": "^2.1.9",
+        "@nuxt-alt/http": "^1.5.5",
+        "@types/js-cookie": "^3.0.2",
+        "@vuestic/nuxt": "^1.0.9",
+        "js-cookie": "^3.0.1",
+        "nuxt-lodash": "^2.4.1"
+    }
 }

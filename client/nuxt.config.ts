@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     ssr: false,
-    modules: ["@vuestic/nuxt", "nuxt-typed-router"],
+    modules: ["@vuestic/nuxt", "nuxt-typed-router", "nuxt-lodash"],
 
     vuestic: {
         config: {

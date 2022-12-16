@@ -22,10 +22,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/register', [UserAuthController::class, 'register']);
-Route::post('/login', [UserAuthController::class, 'login']);
+Route::middleware('guest')->group(function () {
+    Route::post('register', [UserAuthController::class, 'register'])->name('register');
+    Route::post('login', [UserAuthController::class, 'login'])->name('login');
+    Route::post('refresh-token', [UserAuthController::class, 'refreshToken'])->name('refreshToken');
+});
+
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [UserAuthController::class, 'logout'])->name('logout');
     Route::apiResource('cities', CityController::class);
     Route::apiResource('airports', AirportController::class);
     Route::apiResource('airports.departures', AirportDepartureController::class)->scoped();

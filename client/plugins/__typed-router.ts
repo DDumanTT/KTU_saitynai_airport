@@ -7,7 +7,17 @@
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const routesList = { index: 'index', login: 'login' };
+  const routesList = {
+    airlines: 'airlines',
+    airports: 'airports',
+    cities: 'cities',
+    flights: 'flights',
+    index: 'index',
+    login: 'login',
+    planes: 'planes',
+    register: 'register',
+    users: 'users',
+  };
 
   return {
     provide: {

@@ -41,7 +41,8 @@ class CityPolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'admin';
+        // return $user->role == 'admin';
+        return true;
     }
 
     /**

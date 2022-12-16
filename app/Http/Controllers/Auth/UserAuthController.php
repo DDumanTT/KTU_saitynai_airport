@@ -6,70 +6,91 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Utilities\ProxyRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserAuthController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->client = DB::table('oauth_clients')->where('password_client', true)->first();
-    // }
+    protected $proxy;
+
+    public function __construct(ProxyRequest $proxy)
+    {
+        $this->proxy = $proxy;
+    }
 
     public function register(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed'
         ]);
 
-        $data['password'] = bcrypt($request->password);
-
-        $data['role'] = 'user';
-
-        $user = User::create($data);
-
-        $token = $user->createToken('API Token')->accessToken;
-
-        $response = Http::asForm()->post(env("APP_URL", "http://localhost") . '/oauth/token', [
-            'grant_type' => 'password',
-            // 'client_id' => $this->client->id,
-            'client_id' => '3',
-            // 'client_secret' => $this->client->secret,
-            'client_secret' => 'e3HC5KvOhzVwstVUkaSsFeBee9u7pyBX8DPzyna9',
-            'username' => $data['email'],
-            'password' => $request->password,
-            'scope' => '',
+        $user = User::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'role' => 'user',
+            'password' => bcrypt(request('password')),
         ]);
 
-        return response(['user' => $user, 'tokens' => $response]);
-        // return $response;
+        $resp = $this->proxy->grantPasswordToken(
+            $user->email,
+            request('password')
+        );
+
+        return response([
+            'token' => $resp->access_token,
+            'expiresIn' => $resp->expires_in,
+            'message' => 'Your account has been created',
+            'user' => $user->only(['name', 'email', 'role'])
+        ], 201);
     }
 
     public function login(Request $request)
     {
-        $data = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        $user = User::where('email', request('email'))->first();
 
-        // if (!auth()->attempt($data)) {
-        //     return response(['error_message' => 'Incorrect Details.
-        //     Please try again']);
-        // }
+        abort_unless($user, 404, 'User does not exist.');
+        abort_unless(
+            Hash::check(request('password'), $user->password),
+            403,
+            'Invalid password.'
+        );
 
-        // $token = auth()->user()->createToken('API Token')->accessToken;
-        $response = Http::asForm()->post(env("APP_URL", "http://localhost") . '/oauth/token', [
-            'grant_type' => 'password',
-            'client_id' => $this->client->id,
-            'client_secret' => $this->client->secret,
-            'username' => $data['email'],
-            'password' => $request->password,
-            'scope' => '',
-        ]);
+        $resp = $this->proxy
+            ->grantPasswordToken(request('email'), request('password'));
 
-        return response(['user' => auth()->user(), 'tokens' => $response]);
-        // return $response;
+        return response([
+            'token' => $resp->access_token,
+            'expiresIn' => $resp->expires_in,
+            'message' => 'You have been logged in',
+            'user' => $user->only(['name', 'email', 'role'])
+        ], 200);
+    }
+
+    public function refreshToken()
+    {
+        $resp = $this->proxy->refreshAccessToken();
+
+        return response([
+            'token' => $resp->access_token,
+            'expiresIn' => $resp->expires_in,
+            'message' => 'Token has been refreshed.',
+        ], 200);
+    }
+
+    public function logout()
+    {
+        $token = request()->user()->token();
+        $token->delete();
+
+        // remove the httponly cookie
+        cookie()->queue(cookie()->forget('refresh_token'));
+
+        return response([
+            'message' => 'You have been successfully logged out',
+        ], 200);
     }
 }

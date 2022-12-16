@@ -1,12 +1,13 @@
 <template>
   <div class="main">
-    <navbar class="nav" />
+    <Navbar class="nav" />
     <div class="content">
-      <sidebar :minimized="isSidebarMinimized" />
+      <Sidebar :minimized="isSidebarMinimized" />
       <div class="page">
         <div class="layout fluid va-gutter-5">
           <slot />
         </div>
+        <MainFooter />
       </div>
     </div>
   </div>
@@ -36,5 +37,11 @@ const isSidebarMinimized = useState("isSidebarMinimized", () => false);
 .page {
   flex-grow: 2;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-height {
+  height: 100%;
 }
 </style>

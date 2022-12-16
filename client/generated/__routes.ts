@@ -5,9 +5,24 @@
  * */
 
 export const routerPagesNames = {
+  airlines: 'airlines' as const,
+  airports: 'airports' as const,
+  cities: 'cities' as const,
+  flights: 'flights' as const,
   index: 'index' as const,
   login: 'login' as const,
+  planes: 'planes' as const,
   register: 'register' as const,
+  users: 'users' as const,
 };
 
-export type TypedRouteList = 'index' | 'login' | 'register';
+export type TypedRouteList =
+  | 'airlines'
+  | 'airports'
+  | 'cities'
+  | 'flights'
+  | 'index'
+  | 'login'
+  | 'planes'
+  | 'register'
+  | 'users';

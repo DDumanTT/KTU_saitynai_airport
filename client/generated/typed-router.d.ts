@@ -13,12 +13,28 @@ import type {
 } from 'vue-router';
 import type { TypedRouteList } from './__routes';
 
-export type RouteListDecl = { index: 'index'; login: 'login'; register: 'register' };
+export type RouteListDecl = {
+  airlines: 'airlines';
+  airports: 'airports';
+  cities: 'cities';
+  flights: 'flights';
+  index: 'index';
+  login: 'login';
+  planes: 'planes';
+  register: 'register';
+  users: 'users';
+};
 
 export type TypedRouteParams = {
+  airlines: never;
+  airports: never;
+  cities: never;
+  flights: never;
   index: never;
   login: never;
+  planes: never;
   register: never;
+  users: never;
 };
 
 type TypedRouteParamsStructure = {
