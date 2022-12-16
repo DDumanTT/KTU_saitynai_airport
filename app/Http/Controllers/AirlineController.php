@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAirlineRequest;
 use App\Http\Requests\UpdateAirlineRequest;
 use App\Models\Airline;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AirlineController extends Controller
 {

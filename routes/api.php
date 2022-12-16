@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->group(function () {
     Route::post('register', [UserAuthController::class, 'register'])->name('register');
     Route::post('login', [UserAuthController::class, 'login'])->name('login');
-    Route::post('refresh-token', [UserAuthController::class, 'refreshToken'])->name('refreshToken');
 });
+Route::post('refresh-token', [UserAuthController::class, 'refreshToken'])->name('refreshToken');
 
 
 Route::middleware('auth:api')->group(function () {

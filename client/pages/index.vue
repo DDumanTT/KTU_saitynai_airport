@@ -1,23 +1,62 @@
 <template>
-  <div class="main">
-    <div class="hero-image">
-      <div class="hero-text">
-        <div>
-          <h1 class="va-h1" style="text-align: center; margin-bottom: 5rem">
-            Where would you like to fly?
-          </h1>
-          <va-form ref="form" tag="form" class="search">
-            <va-input label="Departure" />
-            <va-input label="Arrival" />
-            <va-input label="" />
-          </va-form>
+  <div>
+    <div>
+      <div class="hero-image mb-4">
+        <div class="hero-text py-5">
+          <div>
+            <h1 class="va-h1 mb-4" style="text-align: center">
+              Where would you like to fly?
+            </h1>
+            <va-form class="search">
+              <div class="flex va-spacing-x-1">
+                <va-input v-model="form.departure" label="Departure">
+                  <template #prependInner>
+                    <va-icon name="flight_takeoff" />
+                  </template>
+                </va-input>
+                <va-input v-model="form.arrival" label="Arrival">
+                  <template #prependInner>
+                    <va-icon name="flight_land" />
+                  </template>
+                </va-input>
+              </div>
+              <va-button
+                size="large"
+                icon="arrow_forward"
+                round
+                class="mt-5"
+                @click="handleSearch"
+                >SEARCH</va-button
+              >
+            </va-form>
+          </div>
         </div>
       </div>
     </div>
+    <FlightsGrid :items="searchResult" :loading="loading" />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const form = ref({
+  departure: "",
+  arrival: "",
+});
+
+const loading = ref(false);
+
+const searchResult = useState<Flight[]>("searchResult", () => []);
+
+async function handleSearch() {
+  loading.value = true;
+  const response = await useApi<Flight[]>(
+    `/api/flights?${new URLSearchParams(form.value)}`,
+    "get"
+  );
+  loading.value = false;
+  searchResult.value = response;
+}
+</script>
 
 <style scoped>
 .main {
@@ -28,7 +67,7 @@
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("/img/clouds.jpg");
 
-  height: 100%;
+  height: 50%;
 
   background-position: center;
   background-repeat: no-repeat;
@@ -47,6 +86,7 @@
 
 .search {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;

@@ -24,9 +24,15 @@
           </th>
         </tr>
       </template>
-      <template #cell(actions)="{ rowIndex }">
-        <va-button preset="plain" icon="edit" @click="handleEdit(rowIndex)" />
-        <va-button preset="plain" icon="delete" @click="handleDelete(rowIndex)" />
+      <template #cell(created_at)="{ value }">
+        {{ formatDate(value) }}
+      </template>
+      <template #cell(updated_at)="{ value }">
+        {{ formatDate(value) }}
+      </template>
+      <template #cell(actions)="{ rowData }">
+        <va-button preset="plain" icon="edit" @click="handleEdit(rowData)" />
+        <va-button preset="plain" icon="delete" @click="handleDelete(rowData)" />
       </template>
     </va-data-table>
     <template v-if="editedItem">
@@ -46,10 +52,10 @@
           :label="key"
         />
       </va-modal>
-      <va-modal v-model="showDeleteModal">
-        Are you sure you want to delete this city?
-      </va-modal>
     </template>
+    <va-modal v-model="showDeleteModal" @ok="deleteItem">
+      Are you sure you want to delete this city?
+    </va-modal>
   </div>
 </template>
 
@@ -89,29 +95,58 @@ const loading = ref(true);
 const showDeleteModal = ref(false);
 
 const items = useState<City[]>("cities", () => []);
-const editedItem = useState<Record<string, string> | null>("city", () => null);
+const editedItem = ref<Record<string, string> | null>(null);
+const editedItemId = ref<number | null>(null);
+const deleteItemId = ref<number | null>(null);
 
 async function handleAdd() {
   const response = await useAuthApi<City>("/api/cities", "post", editableFields.value);
   items.value.push(response);
+  createItem.value.forEach((item) => {
+    item.value = "";
+  });
 }
 
-function handleEdit(index: number) {
-  const item = items.value[index];
+function handleEdit(item: City) {
+  editedItemId.value = item.id;
   editedItem.value = {
     ...editableFields.value,
     ...usePick(item, Object.keys(editableFields.value)),
   } as Record<string, string>;
 }
 
-function editItem() {}
+async function editItem() {
+  const response = await useAuthApi<City>(
+    `/api/cities/${editedItemId.value}`,
+    "put",
+    editedItem.value
+  );
+  if (!editedItemId.value) throw new Error("Invalid item id");
+  const index = items.value.findIndex((item) => item.id === editedItemId.value);
+  items.value[index] = response;
+  resetEditedItem();
+}
 
 function resetEditedItem() {
+  editedItemId.value = null;
   editedItem.value = null;
 }
 
-function handleDelete(index: number) {
+function handleDelete(item: City) {
   showDeleteModal.value = true;
+  deleteItemId.value = item.id;
+}
+
+async function deleteItem() {
+  await useAuthApi(`/api/cities/${deleteItemId.value}`, "delete");
+  items.value = items.value.filter((item) => item.id !== deleteItemId.value);
+  showDeleteModal.value = false;
+  deleteItemId.value = null;
+}
+
+function formatDate(value: Date) {
+  const date = new Date(value);
+  return date.toLocaleString();
 }
 
 onMounted(async () => {

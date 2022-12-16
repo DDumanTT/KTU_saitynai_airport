@@ -26,7 +26,7 @@ class AirportController extends Controller
      */
     public function index()
     {
-        return Airport::all();
+        return Airport::with('city')->get();
     }
 
     /**
@@ -57,7 +57,7 @@ class AirportController extends Controller
 
         $airport = Airport::create($request->all());
 
-        return $airport;
+        return $airport->load('city');
     }
 
     /**
@@ -78,7 +78,7 @@ class AirportController extends Controller
 
         $airport->update($request->all());
 
-        return $airport;
+        return $airport->load('city');
     }
 
     /**

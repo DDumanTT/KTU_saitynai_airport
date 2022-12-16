@@ -3,6 +3,7 @@
 namespace App\Utilities;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ProxyRequest
 {
@@ -40,7 +41,10 @@ class ProxyRequest
         ], $params);
 
         $proxy = Request::create('oauth/token', 'post', $params);
+
         $resp = json_decode(app()->handle($proxy)->getContent());
+
+        // dump($params);
 
         $this->setHttpOnlyCookie($resp->refresh_token);
 

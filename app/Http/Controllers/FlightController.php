@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateFlightRequest;
 use App\Models\Airport;
 use App\Models\Flight;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class FlightController extends Controller
 {
@@ -25,9 +26,26 @@ class FlightController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Flight::all();
+        $departureQuery = $request->query('departure');
+        $arrivalQuery = $request->query('arrival');
+
+        $flights = Flight::with('departure.city', 'arrival.city');
+
+        if ($departureQuery) {
+            $flights->whereHas('departure.city', function (Builder $query) use ($departureQuery) {
+                $query->where('country', 'ILIKE', "%{$departureQuery}%");
+            });
+        };
+
+        if ($arrivalQuery) {
+            $flights->whereHas('arrival.city', function (Builder $query) use ($arrivalQuery) {
+                $query->where('country', 'ILIKE', "%{$arrivalQuery}%");
+            });
+        };
+
+        return $flights->get();
     }
 
     /**

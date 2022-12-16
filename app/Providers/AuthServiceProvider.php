@@ -5,7 +5,12 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Airport;
+use App\Policies\AirlinePolicy;
+use App\Policies\AirportPolicy;
 use App\Policies\CityPolicy;
+use App\Policies\FlightPolicy;
+use App\Policies\PlanePolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 
