@@ -1,5 +1,9 @@
 <template>
-  <va-sidebar :minimized="minimized" class="sidebar">
+  <va-sidebar
+    :minimized="minimized"
+    :minimized-width="isMobile ? '0' : '4rem'"
+    :class="['sidebar', { absolute: isMobile }]"
+  >
     <va-sidebar-item :active="$route.path === '/'" tag="NuxtLink" to="/">
       <va-sidebar-item-content>
         <va-icon name="home" />
@@ -8,6 +12,7 @@
     </va-sidebar-item>
 
     <va-sidebar-item
+      v-if="user"
       :active="$route.path.startsWith('/cities')"
       tag="NuxtLink"
       to="/cities"
@@ -19,6 +24,7 @@
     </va-sidebar-item>
 
     <va-sidebar-item
+      v-if="user"
       :active="$route.path.startsWith('/airports')"
       tag="NuxtLink"
       to="/airports"
@@ -30,6 +36,7 @@
     </va-sidebar-item>
 
     <va-sidebar-item
+      v-if="user"
       :active="$route.path.startsWith('/airlines')"
       tag="NuxtLink"
       to="/airlines"
@@ -41,6 +48,7 @@
     </va-sidebar-item>
 
     <va-sidebar-item
+      v-if="user"
       :active="$route.path.startsWith('/planes')"
       tag="NuxtLink"
       to="/planes"
@@ -52,6 +60,7 @@
     </va-sidebar-item>
 
     <va-sidebar-item
+      v-if="user"
       :active="$route.path.startsWith('/flights')"
       tag="NuxtLink"
       to="/flights"
@@ -63,6 +72,7 @@
     </va-sidebar-item>
 
     <va-sidebar-item
+      v-if="user?.role === 'admin'"
       :active="$route.path.startsWith('/users')"
       tag="NuxtLink"
       to="/users"
@@ -76,11 +86,20 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{ minimized?: boolean }>(), { minimized: true });
+withDefaults(defineProps<{ minimized?: boolean; isMobile?: boolean }>(), {
+  minimized: true,
+  isMobile: false,
+});
+
+const { user } = useAuth();
 </script>
 
 <style scoped>
 .sidebar {
   height: 100%;
+}
+
+.absolute {
+  position: absolute;
 }
 </style>

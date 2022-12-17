@@ -6,11 +6,13 @@ export default function <T>(
     body?: RequestInit["body"] | Record<string, any>,
     options?: Partial<FetchOptions>
 ) {
+    const runtimeConfig = useRuntimeConfig();
+
     return $fetch<T>(endpoint, {
         onResponseError({ response }) {
             throw new Error(response._data.message);
         },
-        baseURL: "http://localhost",
+        baseURL: runtimeConfig.public.apiUrl,
         credentials: "include",
         method,
         body,

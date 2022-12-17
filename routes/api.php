@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\PlaneController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,5 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('airlines', AirlineController::class);
     Route::apiResource('flights', FlightController::class);
     Route::apiResource('planes', PlaneController::class);
+    Route::apiResource('users', UserController::class);
 });

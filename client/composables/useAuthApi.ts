@@ -7,6 +7,8 @@ export default function <T>(
     options?: Partial<FetchOptions>
 ) {
     const { user, token, refreshToken } = useAuth();
+    const runtimeConfig = useRuntimeConfig();
+
     return $fetch<T>(endpoint, {
         onResponseError({ response }) {
             throw new Error(response._data.message);
@@ -14,10 +16,9 @@ export default function <T>(
         async onRequest({ options }) {
             if (!user.value) await navigateTo("/login");
             if (!token.value) await refreshToken();
-            // console.log(token.value);
             options.headers = { Authorization: `Bearer ${token.value}` };
         },
-        baseURL: "http://localhost",
+        baseURL: runtimeConfig.public.apiUrl,
         credentials: "include",
         method,
         body,

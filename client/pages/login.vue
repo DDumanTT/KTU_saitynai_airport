@@ -63,7 +63,6 @@ async function handleLogin() {
     await navigateTo("/");
   } catch (err) {
     if (err instanceof Error) {
-      //   console.log(err);
       error.value = err.message;
     }
   }

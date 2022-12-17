@@ -18,6 +18,7 @@ class PlaneController extends Controller
     {
         $this->authorizeResource(Plane::class, 'plane');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +26,7 @@ class PlaneController extends Controller
      */
     public function index()
     {
-        return Plane::all();
+        return Plane::with('airline')->get();
     }
 
     /**
@@ -53,7 +54,9 @@ class PlaneController extends Controller
             'airline_id' => 'required|exists:airlines,id'
         ]);
 
-        return Plane::create($request->all());
+        $plane = Plane::create($request->all());
+
+        return $plane->load('airline');
     }
 
     /**
@@ -68,12 +71,12 @@ class PlaneController extends Controller
         $request->validate([
             'model' => 'required|string',
             'seats' => 'required|numeric',
-            'flight_id' => 'required|exists:flights,id'
+            'airline_id' => 'required|exists:airlines,id'
         ]);
 
         $plane->update($request->all());
 
-        return $plane;
+        return $plane->load('airline');
     }
 
     /**

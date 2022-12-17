@@ -36,6 +36,7 @@ export default function () {
         token.value = null;
         user.value = null;
         localStorage.removeItem("user");
+        navigateTo("/");
     };
 
     return { user, token, setToken, refreshToken, logout };

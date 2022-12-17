@@ -2,7 +2,7 @@
   <div class="main">
     <Navbar class="nav" />
     <div class="content">
-      <Sidebar :minimized="isSidebarMinimized" />
+      <Sidebar :minimized="isSidebarMinimized" :is-mobile="isMobile" />
       <div class="page">
         <div class="layout fluid va-gutter-5">
           <slot />
@@ -15,6 +15,24 @@
 
 <script setup lang="ts">
 const isSidebarMinimized = useState("isSidebarMinimized", () => false);
+const isMobile = ref(false);
+const breakpoint = useBreakpoint();
+
+function onResize() {
+  if (breakpoint.xs) isMobile.value = true;
+  else isMobile.value = false;
+}
+
+onResize();
+
+if (isMobile.value) isSidebarMinimized.value = true;
+
+onMounted(() => {
+  window.addEventListener("resize", onResize);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", onResize);
+});
 </script>
 
 <style scoped>
@@ -29,6 +47,7 @@ const isSidebarMinimized = useState("isSidebarMinimized", () => false);
 }
 
 .content {
+  position: relative;
   height: calc(100vh - 4rem);
   display: flex;
   flex: 1;

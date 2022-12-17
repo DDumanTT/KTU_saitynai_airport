@@ -8,7 +8,7 @@
               Where would you like to fly?
             </h1>
             <va-form class="search">
-              <div class="flex va-spacing-x-1">
+              <div class="row justify-center va-spacing-x-1">
                 <va-input v-model="form.departure" label="Departure">
                   <template #prependInner>
                     <va-icon name="flight_takeoff" />

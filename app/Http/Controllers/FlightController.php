@@ -31,7 +31,7 @@ class FlightController extends Controller
         $departureQuery = $request->query('departure');
         $arrivalQuery = $request->query('arrival');
 
-        $flights = Flight::with('departure.city', 'arrival.city');
+        $flights = Flight::with('departure.city', 'arrival.city', 'airline');
 
         if ($departureQuery) {
             $flights->whereHas('departure.city', function (Builder $query) use ($departureQuery) {
@@ -81,7 +81,7 @@ class FlightController extends Controller
 
         $flight = Flight::create($request->all());
 
-        return $flight;
+        return $flight->load('departure.city', 'arrival.city', 'airline');
     }
 
     /**
@@ -106,7 +106,7 @@ class FlightController extends Controller
 
         $flight->update($request->all());
 
-        return $flight;
+        return $flight->load('departure.city', 'arrival.city', 'airline');
     }
 
     /**

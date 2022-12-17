@@ -3,6 +3,12 @@ export default defineNuxtConfig({
     ssr: false,
     modules: ["@vuestic/nuxt", "nuxt-typed-router", "nuxt-lodash"],
 
+    runtimeConfig: {
+        public: {
+            apiUrl: "",
+        },
+    },
+
     vuestic: {
         config: {
             colors: {

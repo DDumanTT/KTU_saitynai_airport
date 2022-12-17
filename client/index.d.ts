@@ -9,12 +9,6 @@ interface SelectOptions {
     key: number;
 }
 
-interface User {
-    name: string;
-    email: string;
-    role: Role;
-}
-
 interface TokenResponse {
     message: string;
     token: string;
@@ -36,6 +30,12 @@ interface ApiResponse {
     id: number;
     created_at: Date;
     updated_at: Date;
+}
+
+interface User extends ApiResponse {
+    name: string;
+    email: string;
+    role: Role;
 }
 
 interface City extends ApiResponse {
@@ -68,6 +68,13 @@ interface Flight extends ApiResponse {
     departure?: Airport;
     arrival_id: number;
     arrival?: Airport;
+    airline_id: number;
+    airline?: Airline;
+}
+
+interface Plane extends ApiResponse {
+    model: string;
+    seats: string;
     airline_id: number;
     airline?: Airline;
 }

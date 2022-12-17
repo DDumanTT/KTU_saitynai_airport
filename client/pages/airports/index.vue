@@ -67,13 +67,19 @@
       </va-modal>
     </template>
     <va-modal v-model="showDeleteModal" @ok="deleteItem">
-      Are you sure you want to delete this city?
+      Are you sure you want to delete this airport?
     </va-modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { DataTableColumnSource, DataTableItem, VaDataTable } from "vuestic-ui";
+
+definePageMeta({
+  middleware: ["auth"],
+});
+
+const { init: showToast } = useToast();
 
 const columns: DataTableColumnSource[] = [
   { key: "id" },
@@ -125,15 +131,19 @@ const formatItems = computed(() => {
 });
 
 async function handleAdd() {
-  const response = await useAuthApi<Airport>(
-    "/api/airports",
-    "post",
-    editableFields.value
-  );
-  items.value.push(response);
-  createItem.value.forEach((item) => {
-    item.value = "";
-  });
+  try {
+    const response = await useAuthApi<Airport>(
+      "/api/airports",
+      "post",
+      editableFields.value
+    );
+    items.value.push(response);
+    createItem.value.forEach((item) => {
+      item.value = "";
+    });
+  } catch (err) {
+    if (err instanceof Error) showToast({ message: err.message, color: "danger" });
+  }
 }
 
 function handleEdit(item: Airport) {
@@ -145,15 +155,19 @@ function handleEdit(item: Airport) {
 }
 
 async function editItem() {
-  const response = await useAuthApi<Airport>(
-    `/api/airports/${editedItemId.value}`,
-    "put",
-    editedItem.value
-  );
-  if (!editedItemId.value) throw new Error("Invalid item id");
-  const index = items.value.findIndex((item) => item.id === editedItemId.value);
-  items.value[index] = response;
-  resetEditedItem();
+  try {
+    const response = await useAuthApi<Airport>(
+      `/api/airports/${editedItemId.value}`,
+      "put",
+      editedItem.value
+    );
+    if (!editedItemId.value) throw new Error("Invalid item id");
+    const index = items.value.findIndex((item) => item.id === editedItemId.value);
+    items.value[index] = response;
+    resetEditedItem();
+  } catch (err) {
+    if (err instanceof Error) showToast({ message: err.message, color: "danger" });
+  }
 }
 
 function resetEditedItem() {

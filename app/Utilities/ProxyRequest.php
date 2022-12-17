@@ -44,8 +44,6 @@ class ProxyRequest
 
         $resp = json_decode(app()->handle($proxy)->getContent());
 
-        // dump($params);
-
         $this->setHttpOnlyCookie($resp->refresh_token);
 
         return $resp;

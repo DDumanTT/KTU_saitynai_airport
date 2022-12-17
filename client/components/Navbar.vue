@@ -1,5 +1,5 @@
 <template>
-  <va-navbar color="BackgroundElement" text-color="primary" shape class="nav">
+  <va-navbar color="BackgroundElement" text-color="primary" class="nav">
     <template #left>
       <div class="left">
         <va-button
@@ -23,7 +23,7 @@
         <va-button icon="person" to="/login">LOGIN</va-button>
       </template>
       <template v-else>
-        <div class="row align-center va-spacing-x-3">
+        <div class="row align-center justify-center va-spacing-x-3">
           <span>{{ user.name }}</span>
           <va-avatar color="primary">{{ user.name[0].toUpperCase() }}</va-avatar>
           <va-button
@@ -60,6 +60,7 @@ const colors = computed(() => getColors());
 .nav {
   box-shadow: var(--va-box-shadow);
   z-index: 2;
+  min-height: fit-content;
 }
 
 .logo {

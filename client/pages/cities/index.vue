@@ -62,6 +62,12 @@
 <script setup lang="ts">
 import { DataTableColumnSource, DataTableItem, VaDataTable } from "vuestic-ui";
 
+definePageMeta({
+  middleware: ["auth"],
+});
+
+const { init: showToast } = useToast();
+
 const columns: DataTableColumnSource[] = [
   { key: "id" },
   { key: "name" },
@@ -100,11 +106,15 @@ const editedItemId = ref<number | null>(null);
 const deleteItemId = ref<number | null>(null);
 
 async function handleAdd() {
-  const response = await useAuthApi<City>("/api/cities", "post", editableFields.value);
-  items.value.push(response);
-  createItem.value.forEach((item) => {
-    item.value = "";
-  });
+  try {
+    const response = await useAuthApi<City>("/api/cities", "post", editableFields.value);
+    items.value.push(response);
+    createItem.value.forEach((item) => {
+      item.value = "";
+    });
+  } catch (err) {
+    if (err instanceof Error) showToast({ message: err.message, color: "danger" });
+  }
 }
 
 function handleEdit(item: City) {
@@ -116,15 +126,19 @@ function handleEdit(item: City) {
 }
 
 async function editItem() {
-  const response = await useAuthApi<City>(
-    `/api/cities/${editedItemId.value}`,
-    "put",
-    editedItem.value
-  );
-  if (!editedItemId.value) throw new Error("Invalid item id");
-  const index = items.value.findIndex((item) => item.id === editedItemId.value);
-  items.value[index] = response;
-  resetEditedItem();
+  try {
+    const response = await useAuthApi<City>(
+      `/api/cities/${editedItemId.value}`,
+      "put",
+      editedItem.value
+    );
+    if (!editedItemId.value) throw new Error("Invalid item id");
+    const index = items.value.findIndex((item) => item.id === editedItemId.value);
+    items.value[index] = response;
+    resetEditedItem();
+  } catch (err) {
+    if (err instanceof Error) showToast({ message: err.message, color: "danger" });
+  }
 }
 
 function resetEditedItem() {
