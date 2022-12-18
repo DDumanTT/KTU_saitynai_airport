@@ -48,21 +48,37 @@ Sistemos sudedamosios dalys:
 
 Prisijungimo langas:
 
+![image](https://user-images.githubusercontent.com/68790146/208309244-b27c1614-dcc1-4e0a-9eb2-ad853f9a2f65.png)
+
 Registracijos langas:
+
+![image](https://user-images.githubusercontent.com/68790146/208309248-a605fc93-9c63-40a3-bd0e-56dacf4a0e84.png)
 
 Pagrindinis langas:
 
+![image](https://user-images.githubusercontent.com/68790146/208309261-df3f5ea8-3714-465f-bf73-9856f7ba5465.png)
+
 CRUD langas:
+
+![image](https://user-images.githubusercontent.com/68790146/208309268-67be47e8-11af-4505-b268-a1666acae967.png)
 
 ## Langai
 
 Prisijungimo langas:
 
+![image](https://user-images.githubusercontent.com/68790146/208309309-ac62b587-b265-4f9e-9d21-ecad2f4bfe2b.png)
+
 Registracijos langas:
+
+![image](https://user-images.githubusercontent.com/68790146/208309315-709d5294-29ba-4692-92cc-e3104454d2c3.png)
 
 Pagrindinis langas:
 
+![image](https://user-images.githubusercontent.com/68790146/208309284-75cfb395-16f9-4a11-a2de-7d1c34ec684d.png)
+
 CRUD langas:
+
+![image](https://user-images.githubusercontent.com/68790146/208309303-c5cc8c09-fea7-43a2-8347-c6d04a5e99c6.png)
 
 # API Specifikacija
 
