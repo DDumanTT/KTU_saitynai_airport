@@ -42,6 +42,28 @@ Sistemos sudedamosios dalys:
 
 ![deployment diagram](deployment_diagram.png)
 
+# Naudotojo sąsaja
+
+## Langų "wireframes"
+
+Prisijungimo langas:
+
+Registracijos langas:
+
+Pagrindinis langas:
+
+CRUD langas:
+
+## Langai
+
+Prisijungimo langas:
+
+Registracijos langas:
+
+Pagrindinis langas:
+
+CRUD langas:
+
 # API Specifikacija
 
 ## Airport
@@ -598,3 +620,193 @@ Atsakymo kodas: 200 (OK)
 Klaidų kodai:
 
 - 404 - Nerastas lėktuvas
+
+---
+
+## City
+
+HTTP metodas: GET
+
+Paskirtis: Gauti visus miestus
+
+URI: `/api/cities/`
+
+Užklausos struktūra: -
+
+Užklausos _header_: -
+
+Užklausos atsakymas:
+
+```json
+[
+  {
+    "id": 10,
+    "country": "Hong Kong",
+    "name": "Lavinahaven",
+    "created_at": "2022-12-18T16:04:40.000000Z",
+    "updated_at": "2022-12-18T16:04:40.000000Z"
+  },
+...
+]
+```
+
+Atsakymo kodas: 200 (OK)
+
+Klaidų kodai:
+
+- 404 - Nerasta miestų
+
+---
+
+HTTP metodas: GET
+
+Paskirtis: Gauti miestą pagal ID
+
+URI: `/api/cities/{id}`
+
+Užklausos struktūra: -
+
+Užklausos _header_: -
+
+Užklausos atsakymas:
+
+```json
+[
+  {
+    "id": 10,
+    "country": "Hong Kong",
+    "name": "Lavinahaven",
+    "created_at": "2022-12-18T16:04:40.000000Z",
+    "updated_at": "2022-12-18T16:04:40.000000Z"
+  }
+...
+]
+```
+
+Atsakymo kodas: 200 (OK)
+
+Klaidų kodai:
+
+- 404 - Nerastas miestas
+
+---
+
+HTTP metodas: POST
+
+Paskirtis: Sukurt naują miestą
+
+URI: `/api/cities/`
+
+Užklausos struktūra:
+
+```json
+{
+  "country": "test",
+  "name": "test"
+}
+```
+
+Užklausos _header_:
+
+```json
+{
+  "X-Requested-With": "XMLHttpRequest"
+}
+```
+
+Užklausos atsakymas:
+
+```json
+[
+  {
+    "id": 11,
+    "country": "test",
+    "name": "test",
+    "created_at": "2022-12-18T16:04:40.000000Z",
+    "updated_at": "2022-12-18T16:04:40.000000Z"
+  }
+...
+]
+```
+
+Atsakymo kodas: 201 (Created)
+
+Klaidų kodai:
+
+- 422 - Bloga užklausa
+
+---
+
+HTTP metodas: PUT
+
+Paskirtis: Atnaujinti miestą
+
+URI: `/api/cities/{id}`
+
+Užklausos struktūra:
+
+```json
+{
+  "country": "test1",
+  "name": "test1"
+}
+```
+
+Užklausos _header_:
+
+```json
+{
+  "X-Requested-With": "XMLHttpRequest"
+}
+```
+
+Užklausos atsakymas:
+
+```json
+[
+  {
+    "id": 11,
+    "country": "test1",
+    "name": "test1",
+    "created_at": "2022-12-18T16:04:40.000000Z",
+    "updated_at": "2022-12-18T16:05:40.000000Z"
+  }
+...
+]
+```
+
+Atsakymo kodas: 200 (OK)
+
+Klaidų kodai:
+
+- 404 - Nerastas miestas
+- 422 - Bloga užklausa
+
+---
+
+HTTP metodas: DELETE
+
+Paskirtis: Ištrinti miestą
+
+URI: `/api/cities/{id}`
+
+Užklausos struktūra: -
+
+Užklausos _header_: -
+
+Užklausos atsakymas: -
+
+Atsakymo kodas: 200 (OK)
+
+Klaidų kodai:
+
+- 404 - Nerastas miestas
+
+---
+
+# Išvados
+
+- Sukurtas projektas pasinaudojant saitynų technologijas;
+- Sukurta projekto serverio pusė;
+- Sukurta duomenų bazė ir susieta su serveriu;
+- Sukurta naudotojo sąsaja, kuri naudoja serverį.
